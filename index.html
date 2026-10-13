@@ -1,0 +1,470 @@
+<title>Little Moon</title>
+<meta name="theme-color" content="#FFF4F6">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Little Moon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: one soft column of rounded "sticker" cards on strawberry-milk paper; two columns on PC and iPad. */
+:root{
+  --bg:#FFF4F6; --card:#FFFFFF; --ink:#4B2A3A; --muted:#94707F;
+  --berry:#E9557F; --berry-ink:#FFFFFF; --berry-soft:#FFD9E4;
+  --lav:#9C86EC; --lav-soft:#EEE8FF; --butter:#FFEDB5; --mint:#CDEFDF; --line:#F5DCE4;
+  --shadow:0 6px 0 #F3D3DE; --moon:#FFE38A; --moon-ink:#4B2A3A; --moon-shine:#FFFFFF;
+  --display:"Fredoka","Baloo 2","Comic Sans MS",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#22161E; --card:#2F1F2A; --ink:#FCEAF1; --muted:#C79EB1;
+  --berry:#FF7FA5; --berry-ink:#2A1420; --berry-soft:#5B2B3E;
+  --lav:#C3B2FF; --lav-soft:#3B3057; --butter:#5A4A20; --mint:#25483A; --line:#47303E;
+  --shadow:0 6px 0 #1A1016; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#22161E; --card:#2F1F2A; --ink:#FCEAF1; --muted:#C79EB1;
+  --berry:#FF7FA5; --berry-ink:#2A1420; --berry-soft:#5B2B3E;
+  --lav:#C3B2FF; --lav-soft:#3B3057; --butter:#5A4A20; --mint:#25483A; --line:#47303E;
+  --shadow:0 6px 0 #1A1016; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--body);font-size:17px;line-height:1.5;
+  background-image:radial-gradient(var(--line) 1.4px,transparent 1.6px);background-size:26px 26px}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--lav);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;line-height:1.2}
+
+.wrap{max-width:1000px;margin:0 auto;padding-inline:16px;padding-block:16px 120px}
+.top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.top .hello{flex:1;min-width:0}
+.top h1{font-size:30px}
+.top p{margin:2px 0 0;color:var(--muted);font-weight:600}
+.mascot{width:72px;height:72px;flex:none}
+.mascot .bob{animation:bob 3.2s ease-in-out infinite;transform-origin:50% 60%}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;gap:6px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:2px solid var(--line)}
+.tab{flex:1;max-width:150px;border:none;background:transparent;border-radius:18px;padding:8px 6px;
+  font-family:var(--display);font-weight:500;font-size:15px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+.tab svg{width:26px;height:26px}
+.tab[aria-selected="true"]{background:var(--berry-soft);color:var(--berry)}
+
+.card{background:var(--card);border:2px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow);min-width:0}
+.card h2{font-size:22px;margin-bottom:12px}
+.grid2{display:grid;gap:20px}
+@media (min-width:820px){.grid2{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:start}}
+.stack{display:flex;flex-direction:column;gap:20px;min-width:0}
+
+/* ring */
+.ringbox{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
+.ring{width:min(280px,78vw);aspect-ratio:1;max-width:100%;position:relative}
+.ring svg{width:100%;height:100%;display:block}
+.ring .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18%}
+.ring .small{font-weight:700;color:var(--muted);font-size:15px;text-transform:uppercase;letter-spacing:.08em}
+.ring .big{font-family:var(--display);font-size:58px;font-weight:600;line-height:1;color:var(--berry)}
+.ring .sub{font-weight:700;font-size:16px;margin-top:4px}
+.next{font-weight:700;font-size:18px}
+.next .range{display:inline-block;background:var(--lav-soft);color:var(--ink);border-radius:999px;padding:2px 12px;margin-top:4px;font-size:16px}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;width:100%}
+.btn{border:none;border-radius:20px;padding:14px 20px;font-family:var(--display);font-weight:600;font-size:18px;
+  background:var(--lav-soft);color:var(--ink);box-shadow:0 4px 0 var(--line);transition:transform .1s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.btn.main{background:var(--berry);color:var(--berry-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--berry) 60%,#000)}
+.btn.main:active{box-shadow:0 1px 0 color-mix(in srgb,var(--berry) 60%,#000)}
+.btn.wide{width:100%}
+.link{background:none;border:none;color:var(--muted);font-weight:700;text-decoration:underline;padding:6px}
+.banner{display:flex;gap:12px;align-items:center;background:var(--butter);border-radius:22px;padding:14px 16px;font-weight:700}
+.banner .ico{font-size:28px}
+
+/* log editor */
+.field{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.field:last-child{margin-bottom:0}
+.label{font-family:var(--display);font-weight:500;font-size:17px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-weight:700;font-size:15px;display:inline-flex;gap:6px;align-items:center}
+.chip[aria-pressed="true"]{background:var(--berry-soft);border-color:var(--berry);color:var(--ink)}
+.chip.lavchip[aria-pressed="true"]{background:var(--lav-soft);border-color:var(--lav)}
+.chip.mintchip[aria-pressed="true"]{background:var(--mint);border-color:color-mix(in srgb,var(--mint) 50%,var(--ink))}
+.drops{letter-spacing:-2px}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--berry-soft);border-radius:20px;padding:12px 16px;font-weight:800}
+.switch{width:58px;height:34px;border-radius:999px;border:none;background:var(--line);position:relative;flex:none}
+.switch::after{content:"";position:absolute;top:4px;left:4px;width:26px;height:26px;border-radius:50%;background:var(--card);transition:left .15s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch[aria-checked="true"]{background:var(--berry)}
+.switch[aria-checked="true"]::after{left:28px}
+textarea{width:100%;min-height:76px;border:2px solid var(--line);border-radius:18px;padding:10px 14px;background:var(--bg);resize:vertical}
+.saved{color:var(--muted);font-weight:700;font-size:14px;min-height:20px;text-align:right}
+
+/* calendar */
+.calhead{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.calhead h2{flex:1;margin:0;text-align:center}
+.round{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--card);font-size:20px;font-weight:800}
+.week,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;text-align:center}
+.week span{font-weight:800;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.day{aspect-ratio:1;max-width:100%;border:none;border-radius:50%;background:transparent;font-weight:700;font-size:16px;position:relative;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.day.out{visibility:hidden}
+.day.period{background:var(--berry);color:var(--berry-ink)}
+.day.pred{border:2.5px dashed var(--berry);color:var(--berry)}
+.day.today{box-shadow:0 0 0 3px var(--lav)}
+.day.future{opacity:.55;cursor:default}
+.day .dot{position:absolute;bottom:12%;width:6px;height:6px;border-radius:50%;background:var(--lav)}
+.day.period .dot{background:var(--berry-ink)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-weight:700;font-size:14px;color:var(--muted)}
+.legend i{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:-3px;margin-right:6px}
+
+/* sheet */
+.veil{position:fixed;inset:0;background:rgba(40,15,30,.4);z-index:30}
+.sheet{position:fixed;z-index:31;left:0;right:0;bottom:0;max-height:88vh;overflow-y:auto;background:var(--card);border-radius:30px 30px 0 0;
+  padding:22px 18px calc(22px + env(safe-area-inset-bottom,0px));max-width:620px;margin:0 auto}
+@media (min-width:820px){.sheet{bottom:auto;top:50%;transform:translateY(-50%);border-radius:30px;max-height:84vh}}
+.sheethead{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.sheethead h2{flex:1;margin:0}
+
+/* insights */
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tile{border-radius:22px;padding:14px 16px;background:var(--lav-soft)}
+.tile:nth-child(2){background:var(--berry-soft)}
+.tile:nth-child(3){background:var(--mint)}
+.tile b{display:block;font-family:var(--display);font-size:clamp(26px,6vw,34px);font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
+.tile span{font-weight:700;font-size:13px;color:var(--ink);line-height:1.25;display:block}
+.tile{padding:12px}
+.plist{display:flex;flex-direction:column;gap:8px}
+.prow{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:18px;background:var(--bg);font-weight:700;flex-wrap:wrap}
+.prow .when{flex:1;min-width:150px}
+.pill{border-radius:999px;padding:2px 10px;font-size:14px;background:var(--berry-soft)}
+.pill.l{background:var(--lav-soft)}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:130px minmax(0,1fr) 34px;gap:10px;align-items:center;font-weight:700;font-size:15px}
+.bar .t{height:14px;border-radius:999px;background:var(--bg);overflow:hidden}
+.bar .t i{display:block;height:100%;border-radius:999px;background:var(--lav)}
+.bar .n{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.tip{background:var(--bg);border-radius:20px;padding:14px 16px;font-size:16px}
+.tip ul{margin:6px 0 0;padding-left:20px}
+.empty{color:var(--muted);font-weight:700;text-align:center;padding:10px}
+
+/* settings */
+.set{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.set:last-child{margin-bottom:0}
+.inp{border:2px solid var(--line);border-radius:16px;padding:10px 14px;background:var(--bg);width:100%}
+.hint{color:var(--muted);font-size:15px;margin:0}
+.danger{background:transparent;border:2px solid var(--berry);color:var(--berry)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:40;
+  background:var(--ink);color:var(--bg);font-weight:800;padding:12px 20px;border-radius:999px;max-width:90vw;text-align:center}
+.example{background:var(--butter);border-radius:16px;padding:8px 14px;font-weight:700;font-size:15px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+@media (prefers-reduced-motion:reduce){.mascot .bob{animation:none}.btn,.switch::after{transition:none}}
+@media (max-width:420px){.top h1{font-size:25px}.ring .big{font-size:48px}.bar{grid-template-columns:100px minmax(0,1fr) 30px}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <svg class="mascot" viewBox="0 0 100 100" aria-hidden="true">
+      <g class="bob">
+        <circle cx="50" cy="54" r="38" fill="var(--moon)" stroke="var(--moon-ink)" stroke-width="3"/>
+        <circle cx="66" cy="38" r="9" fill="var(--moon-shine)" opacity=".55"/>
+        <circle cx="38" cy="54" r="4" fill="var(--moon-ink)"/><circle cx="62" cy="54" r="4" fill="var(--moon-ink)"/>
+        <circle cx="39.5" cy="52.5" r="1.3" fill="var(--moon-shine)"/><circle cx="63.5" cy="52.5" r="1.3" fill="var(--moon-shine)"/>
+        <path d="M44 63 Q50 69 56 63" fill="none" stroke="var(--moon-ink)" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="29" cy="64" rx="6" ry="4" fill="var(--berry)" opacity=".45"/><ellipse cx="71" cy="64" rx="6" ry="4" fill="var(--berry)" opacity=".45"/>
+      </g>
+      <path d="M86 14 l2.5 6 6 2.5 -6 2.5 -2.5 6 -2.5 -6 -6 -2.5 6 -2.5z" fill="var(--lav)"/>
+      <path d="M12 22 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6z" fill="var(--berry)"/>
+    </svg>
+    <div class="hello"><h1 id="hello">Hi there!</h1><p id="todayLabel"></p></div>
+  </header>
+  <div id="exampleBar"></div>
+  <main id="view"></main>
+</div>
+
+<nav class="tabs" role="tablist">
+  <button class="tab" role="tab" data-tab="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>Today</button>
+  <button class="tab" role="tab" data-tab="cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="4"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>Calendar</button>
+  <button class="tab" role="tab" data-tab="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 21s-7-4.4-9-9.2C1.6 8.3 3.7 5 7 5c2 0 3.3 1.1 5 3 1.7-1.9 3-3 5-3 3.3 0 5.4 3.3 4 6.8-2 4.8-9 9.2-9 9.2z"/></svg>My cycles</button>
+  <button class="tab" role="tab" data-tab="set"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg>Settings</button>
+</nav>
+<div id="layer"></div>
+
+<script>
+(function(){
+"use strict";
+var KEY="littlemoon-v1";
+var FLOWS=[["spot","Spotting","💧"],["light","Light","💧"],["medium","Medium","💧💧"],["heavy","Heavy","💧💧💧"]];
+var CRAMPS=["None","Mild","Medium","Strong"];
+var MOODS=[["happy","😊","Happy"],["calm","😌","Calm"],["energetic","🤩","Energetic"],["sensitive","🥺","Sensitive"],["sad","😢","Sad"],["grumpy","😤","Grumpy"],["anxious","😟","Worried"],["sleepy","😴","Sleepy"]];
+var SYMPTOMS=["Headache","Bloating","Tired","Back pain","Pimples","Tender chest","Upset tummy","Cravings","Can't sleep","Dizzy"];
+var MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+var WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+/* ---------- storage ---------- */
+function blank(){return {name:"",remind:2,logs:{},answered:"",example:false};}
+var S=blank();
+try{var raw=localStorage.getItem(KEY);if(raw){S=Object.assign(blank(),JSON.parse(raw));}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+/* ---------- dates ---------- */
+function pad(n){return (n<10?"0":"")+n;}
+function key(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function parse(k){var p=k.split("-");return new Date(+p[0],p[1]-1,+p[2],12);}
+function add(k,n){var d=parse(k);d.setDate(d.getDate()+n);return key(d);}
+function diff(a,b){return Math.round((parse(b)-parse(a))/864e5);}
+function today(){var d=new Date();d.setHours(12,0,0,0);return key(d);}
+function nice(k,withDay){var d=parse(k);return (withDay?WD[d.getDay()]+", ":"")+d.getDate()+" "+MONTHS[d.getMonth()].slice(0,3);}
+function niceRange(a,b){var A=parse(a),B=parse(b);if(A.getMonth()===B.getMonth())return A.getDate()+"–"+B.getDate()+" "+MONTHS[A.getMonth()].slice(0,3);return nice(a)+" – "+nice(b);}
+
+/* ---------- cycle maths ---------- */
+function periods(){
+  var ds=Object.keys(S.logs).filter(function(k){return S.logs[k].p;}).sort(),out=[];
+  ds.forEach(function(k){var last=out[out.length-1];if(last&&diff(last.end,k)<=2)last.end=k;else out.push({start:k,end:k});});
+  return out;
+}
+function stats(){
+  var ps=periods(),t=today(),cyc=[],lens=[];
+  for(var i=1;i<ps.length;i++){var c=diff(ps[i-1].start,ps[i].start);if(c>=15&&c<=90)cyc.push(c);}
+  ps.forEach(function(p){if(p.end!==t&&p.end!==add(t,-1))lens.push(diff(p.start,p.end)+1);});
+  var rc=cyc.slice(-6),rl=lens.slice(-6);
+  var avgC=rc.length?Math.round(rc.reduce(function(a,b){return a+b},0)/rc.length):28;
+  var avgL=rl.length?Math.round(rl.reduce(function(a,b){return a+b},0)/rl.length):5;
+  var spread=5;
+  if(rc.length>=2){var m=rc.reduce(function(a,b){return a+b},0)/rc.length;var sd=Math.sqrt(rc.reduce(function(a,b){return a+(b-m)*(b-m)},0)/rc.length);spread=Math.max(2,Math.min(7,Math.round(sd)+1));}
+  else if(rc.length===1)spread=4;
+  var last=ps[ps.length-1]||null,next=null;
+  if(last){next=add(last.start,avgC);}
+  return {ps:ps,cyc:cyc,lens:lens,avgC:avgC,avgL:avgL,spread:spread,last:last,next:next,known:rc.length};
+}
+function predictedDays(st){
+  var set={};if(!st.next)return set;
+  var t=today(),start=st.next;
+  // if late, don't paint predictions in the past
+  for(var c=0;c<3;c++){
+    var s=add(start,c*st.avgC);
+    for(var i=0;i<st.avgL;i++){var k=add(s,i);if(k>t)set[k]=1;}
+  }
+  return set;
+}
+
+/* ---------- ui helpers ---------- */
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+var toastT;
+function toast(msg){var l=$("layer"),t=document.querySelector(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t);}t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true},2200);}
+function log(k){return S.logs[k]||(S.logs[k]={});}
+function tidy(k){var l=S.logs[k];if(!l)return;if(!l.p)delete l.flow;if(l.moods&&!l.moods.length)delete l.moods;if(l.sym&&!l.sym.length)delete l.sym;if(l.note==="")delete l.note;if(!l.cramps)delete l.cramps;if(!Object.keys(l).length)delete S.logs[k];}
+function hasNotes(l){return l&&(l.cramps||(l.moods&&l.moods.length)||(l.sym&&l.sym.length)||l.note);}
+
+/* ---------- day editor (used on Today and in the calendar) ---------- */
+function editor(k,host,onChange){
+  function draw(){
+    var l=S.logs[k]||{};
+    var h='<div class="field"><div class="toggle"><span>🩸 Period day</span><button class="switch" role="switch" aria-checked="'+(l.p?"true":"false")+'" aria-label="Period day" data-act="p"></button></div></div>';
+    if(l.p){h+='<div class="field"><div class="label">Flow</div><div class="chips">'+FLOWS.map(function(f){return '<button class="chip" aria-pressed="'+(l.flow===f[0])+'" data-flow="'+f[0]+'"><span class="drops">'+f[2]+'</span>'+f[1]+'</button>';}).join("")+'</div></div>';}
+    h+='<div class="field"><div class="label">Cramps</div><div class="chips">'+CRAMPS.map(function(c,i){return '<button class="chip lavchip" aria-pressed="'+((l.cramps||0)===i)+'" data-cramps="'+i+'">'+(i?"⚡".repeat(i)+" ":"🙂 ")+c+'</button>';}).join("")+'</div></div>';
+    h+='<div class="field"><div class="label">Mood</div><div class="chips">'+MOODS.map(function(m){return '<button class="chip" aria-pressed="'+((l.moods||[]).indexOf(m[0])>=0)+'" data-mood="'+m[0]+'"><span aria-hidden="true">'+m[1]+'</span>'+m[2]+'</button>';}).join("")+'</div></div>';
+    h+='<div class="field"><div class="label">How your body feels</div><div class="chips">'+SYMPTOMS.map(function(s){return '<button class="chip mintchip" aria-pressed="'+((l.sym||[]).indexOf(s)>=0)+'" data-sym="'+esc(s)+'">'+esc(s)+'</button>';}).join("")+'</div></div>';
+    h+='<div class="field"><label class="label" for="note-'+k+'">Little note</label><textarea id="note-'+k+'" placeholder="Anything else about today…">'+esc(l.note||"")+'</textarea><div class="saved" id="saved-'+k+'"></div></div>';
+    host.innerHTML=h;
+    host.querySelector('[data-act="p"]').onclick=function(){var L=log(k);L.p=!L.p;if(L.p&&!L.flow)L.flow="medium";if(!L.p)delete L.p;commit();};
+    host.querySelectorAll("[data-flow]").forEach(function(b){b.onclick=function(){log(k).flow=b.dataset.flow;commit();};});
+    host.querySelectorAll("[data-cramps]").forEach(function(b){b.onclick=function(){log(k).cramps=+b.dataset.cramps;commit();};});
+    host.querySelectorAll("[data-mood]").forEach(function(b){b.onclick=function(){var L=log(k),a=L.moods||(L.moods=[]),i=a.indexOf(b.dataset.mood);if(i>=0)a.splice(i,1);else a.push(b.dataset.mood);commit();};});
+    host.querySelectorAll("[data-sym]").forEach(function(b){b.onclick=function(){var L=log(k),a=L.sym||(L.sym=[]),i=a.indexOf(b.dataset.sym);if(i>=0)a.splice(i,1);else a.push(b.dataset.sym);commit();};});
+    var ta=host.querySelector("textarea"),tt;
+    ta.oninput=function(){clearTimeout(tt);tt=setTimeout(function(){log(k).note=ta.value.trim();tidy(k);save();var s=$("saved-"+k);if(s)s.textContent="Saved ✓";},400);};
+  }
+  function commit(){tidy(k);save();draw();var s=$("saved-"+k);if(s)s.textContent="Saved ✓";if(onChange)onChange();}
+  draw();
+}
+
+/* ---------- views ---------- */
+var tab="today",calMonth=null;
+function setTab(t){tab=t;document.querySelectorAll(".tab").forEach(function(b){b.setAttribute("aria-selected",b.dataset.tab===t?"true":"false");});render();window.scrollTo(0,0);}
+document.querySelectorAll(".tab").forEach(function(b){b.onclick=function(){setTab(b.dataset.tab);};});
+
+function header(){
+  $("hello").textContent=S.name?"Hi, "+S.name+"!":"Hi there!";
+  $("todayLabel").textContent=nice(today(),true)+" "+parse(today()).getFullYear();
+  $("exampleBar").innerHTML=S.example?'<div class="example">These are example days so you can see how it looks. <button class="btn" id="clearEx" style="padding:6px 14px;font-size:15px">Clear examples</button></div>':"";
+  if(S.example)$("clearEx").onclick=function(){S.logs={};S.example=false;S.answered="";save();toast("Examples cleared");render();};
+}
+
+function ringSVG(day,len,plen,onPeriod){
+  var r=118,C=2*Math.PI*r,frac=Math.min(day/len,1),pf=Math.min(plen/len,1);
+  var a=frac*2*Math.PI-Math.PI/2,x=140+r*Math.cos(a),y=140+r*Math.sin(a);
+  return '<svg viewBox="0 0 280 280" aria-hidden="true">'+
+    '<circle cx="140" cy="140" r="'+r+'" fill="none" stroke="var(--lav-soft)" stroke-width="26"/>'+
+    '<circle cx="140" cy="140" r="'+r+'" fill="none" stroke="var(--berry-soft)" stroke-width="26" stroke-dasharray="'+(pf*C)+' '+C+'" transform="rotate(-90 140 140)" stroke-linecap="round"/>'+
+    '<circle cx="140" cy="140" r="'+r+'" fill="none" stroke="'+(onPeriod?"var(--berry)":"var(--lav)")+'" stroke-width="12" stroke-dasharray="'+(frac*C)+' '+C+'" transform="rotate(-90 140 140)" stroke-linecap="round"/>'+
+    '<circle cx="'+x+'" cy="'+y+'" r="15" fill="var(--card)" stroke="'+(onPeriod?"var(--berry)":"var(--lav)")+'" stroke-width="5"/>'+
+    '</svg>';
+}
+
+function viewToday(){
+  var st=stats(),t=today(),y=add(t,-1),L=S.logs[t]||{},ly=S.logs[y]||{};
+  var h='<div class="grid2"><div class="stack"><section class="card ringbox">';
+  var onP=!!L.p,ringDay,mid,next="",buttons="";
+  if(!st.last){
+    mid='<span class="small">Welcome</span><span class="big">🌙</span><span class="sub">Let\'s start your diary</span>';
+    ringDay=0;
+    next='<p class="next" style="margin:0">When your period comes, tap the button below.<br><span style="color:var(--muted);font-size:16px">Already had one recently? Mark the days on the calendar.</span></p>';
+    buttons='<button class="btn main" id="startBtn">🩸 My period started today</button><button class="btn" id="pickBtn">Mark past days</button>';
+    if(!Object.keys(S.logs).length)buttons+='<button class="link" id="demoBtn">Show me with example days</button>';
+  }else{
+    var cd=diff(st.last.start,t)+1;
+    if(onP){
+      mid='<span class="small">Period</span><span class="big">Day '+(diff(st.last.start,t)+1)+'</span><span class="sub">Be gentle with yourself 💗</span>';
+      ringDay=cd;
+    }else{
+      mid='<span class="small">Cycle day</span><span class="big">'+cd+'</span><span class="sub">of about '+st.avgC+'</span>';
+      ringDay=cd;
+    }
+    var days=diff(t,st.next),lo=add(st.next,-Math.floor(st.spread/2)),hi=add(st.next,Math.ceil(st.spread/2));
+    if(!onP){
+      if(days>1)next='<p class="next" style="margin:0">Next period in about <b>'+days+' days</b><br><span class="range">around '+niceRange(lo,hi)+'</span></p>';
+      else if(days>=0)next='<p class="next" style="margin:0">Your period may come <b>'+(days?"tomorrow":"today")+'</b><br><span class="range">around '+niceRange(lo,hi)+'</span></p>';
+      else next='<p class="next" style="margin:0">Your period is <b>'+(-days)+' day'+(days===-1?"":"s")+'</b> later than usual.<br><span style="color:var(--muted);font-size:16px">That happens a lot, especially in the first years. 🌷</span></p>';
+    }else next='<p class="next" style="margin:0">Next one expected <span class="range">around '+niceRange(add(lo,st.avgC),add(hi,st.avgC))+'</span></p>';
+    if(onP)buttons='<button class="btn" id="notBtn">Oops, not today</button>';
+    else if(ly.p&&S.answered!==st.last.start)buttons='<p style="margin:0;font-weight:800">Is your period still going today?</p><button class="btn main" id="stillBtn">Yes, still going</button><button class="btn" id="endedBtn">No, it ended 🌸</button>';
+    else buttons='<button class="btn main" id="startBtn">🩸 My period started today</button><button class="btn" id="pickBtn">It started another day</button>';
+  }
+  h+='<div class="ring">'+ringSVG(ringDay,st.avgC,st.avgL,onP)+'<div class="mid">'+mid+'</div></div>'+next+'<div class="btnrow">'+buttons+'</div></section>';
+  // reminder banner
+  if(st.next&&S.remind>0&&!onP){var dl=diff(t,st.next);if(dl>=0&&dl<=S.remind)h+='<div class="banner"><span class="ico">🎒</span><span>Reminder: your period may start '+(dl===0?"today":dl===1?"tomorrow":"in "+dl+" days")+'. Keep a pad in your bag!</span></div>';}
+  h+='<section class="card tip"><h2 style="font-size:19px;margin-bottom:6px">Good to know</h2>Cycles from <b>21 to 45 days</b> are normal for teens, and they can change from month to month. Your guesses here get better the more periods you log.</section>';
+  h+='</div><section class="card"><h2>How are you today?</h2><div id="todayEditor"></div></section></div>';
+  $("view").innerHTML=h;
+  editor(t,$("todayEditor"),viewTodayTop);
+  function bind(id,fn){var b=$(id);if(b)b.onclick=fn;}
+  bind("startBtn",function(){var l=log(t);l.p=true;l.flow=l.flow||"medium";save();toast("Logged. Take care of yourself 💗");render();});
+  bind("stillBtn",function(){var l=log(t);l.p=true;l.flow=l.flow||(ly.flow==="heavy"?"medium":"light");save();toast("Logged today 🩸");render();});
+  bind("endedBtn",function(){S.answered=st.last.start;save();toast("Yay, all done for this month 🌸");render();});
+  bind("notBtn",function(){var l=log(t);delete l.p;tidy(t);save();render();});
+  bind("pickBtn",function(){setTab("cal");toast("Tap the days your period happened");});
+  bind("demoBtn",loadExample);
+}
+function viewTodayTop(){ // refresh just the ring card after editing today, keeping the editor in place
+  var ed=$("todayEditor");if(!ed)return;var y=window.scrollY;
+  var tmp=document.createElement("div");tmp.appendChild(ed);
+  viewToday();
+  var fresh=$("todayEditor");fresh.parentNode.replaceChild(ed,fresh);window.scrollTo(0,y);
+}
+
+function viewCal(){
+  var t=today();if(!calMonth){var d=parse(t);calMonth=[d.getFullYear(),d.getMonth()];}
+  var st=stats(),pred=predictedDays(st);
+  var first=new Date(calMonth[0],calMonth[1],1,12),startW=first.getDay(),dim=new Date(calMonth[0],calMonth[1]+1,0).getDate();
+  var h='<div class="grid2"><section class="card"><div class="calhead"><button class="round" id="prevM" aria-label="Previous month">‹</button><h2>'+MONTHS[calMonth[1]]+' '+calMonth[0]+'</h2><button class="round" id="nextM" aria-label="Next month">›</button></div>';
+  h+='<div class="week">'+WD.map(function(w){return '<span>'+w.slice(0,2)+'</span>';}).join("")+'</div><div class="days">';
+  for(var i=0;i<startW;i++)h+='<span class="day out"></span>';
+  for(var dd=1;dd<=dim;dd++){
+    var k=calMonth[0]+"-"+pad(calMonth[1]+1)+"-"+pad(dd),l=S.logs[k],cls="day";
+    if(l&&l.p)cls+=" period";else if(pred[k])cls+=" pred";
+    if(k===t)cls+=" today";if(k>t)cls+=" future";
+    h+='<button class="'+cls+'" data-k="'+k+'" aria-label="'+nice(k,true)+(l&&l.p?", period":pred[k]?", expected period":"")+'"'+(k>t?' tabindex="-1"':'')+'>'+dd+(hasNotes(l)?'<span class="dot"></span>':'')+'</button>';
+  }
+  h+='</div><div class="legend"><span><i style="background:var(--berry)"></i>Period</span><span><i style="border:2.5px dashed var(--berry)"></i>Expected</span><span><i style="background:var(--lav)"></i>Has notes</span><span><i style="box-shadow:0 0 0 3px var(--lav) inset"></i>Today</span></div></section>';
+  h+='<section class="card"><h2>Tap a day</h2><p class="hint" style="margin:0 0 12px">Tap any day up to today to mark your period or add how you felt.</p>';
+  var recent=Object.keys(S.logs).filter(function(k){return k<=t;}).sort().reverse().slice(0,5);
+  if(recent.length){h+='<div class="plist">'+recent.map(function(k){var l=S.logs[k];var bits=[];if(l.p)bits.push('<span class="pill">🩸 '+(FLOWS.filter(function(f){return f[0]===l.flow})[0]||["","Period"])[1]+'</span>');if(l.cramps)bits.push('<span class="pill l">Cramps: '+CRAMPS[l.cramps]+'</span>');(l.moods||[]).forEach(function(m){var M=MOODS.filter(function(x){return x[0]===m})[0];if(M)bits.push('<span title="'+M[2]+'">'+M[1]+'</span>');});return '<button class="prow" data-k="'+k+'" style="border:none;text-align:left;width:100%"><span class="when">'+nice(k,true)+'</span>'+bits.join(" ")+'</button>';}).join("")+'</div>';}
+  else h+='<p class="empty">Nothing logged yet.</p>';
+  h+='</section></div>';
+  $("view").innerHTML=h;
+  $("prevM").onclick=function(){calMonth=calMonth[1]===0?[calMonth[0]-1,11]:[calMonth[0],calMonth[1]-1];viewCal();};
+  $("nextM").onclick=function(){calMonth=calMonth[1]===11?[calMonth[0]+1,0]:[calMonth[0],calMonth[1]+1];viewCal();};
+  document.querySelectorAll("#view [data-k]").forEach(function(b){b.onclick=function(){if(b.dataset.k>t){toast("You can log days up to today");return;}openDay(b.dataset.k);};});
+}
+
+function openDay(k){
+  var layer=$("layer");
+  layer.innerHTML='<div class="veil" id="veil"></div><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetT"><div class="sheethead"><h2 id="sheetT">'+nice(k,true)+'</h2><button class="btn" id="doneBtn" style="padding:10px 18px">Done</button></div><div id="sheetEd"></div></div>';
+  editor(k,$("sheetEd"),function(){if(tab==="cal"){var y=window.scrollY;viewCal();window.scrollTo(0,y);}});
+  function close(){layer.innerHTML="";document.removeEventListener("keydown",esc1);render();}
+  function esc1(e){if(e.key==="Escape")close();}
+  $("veil").onclick=close;$("doneBtn").onclick=close;document.addEventListener("keydown",esc1);
+  $("doneBtn").focus();
+}
+
+function viewMe(){
+  var st=stats(),h='<div class="grid2"><div class="stack"><section class="card"><h2>My rhythm</h2><div class="tiles">'+
+    '<div class="tile"><b>'+(st.known?st.avgC:"–")+'</b><span>days, average cycle</span></div>'+
+    '<div class="tile"><b>'+(st.lens.length?st.avgL:"–")+'</b><span>days, average period</span></div>'+
+    '<div class="tile"><b>'+st.ps.length+'</b><span>periods logged</span></div></div>';
+  if(!st.known)h+='<p class="hint" style="margin:12px 0 0">After two periods, your own averages will show up here.</p>';
+  h+='</section><section class="card"><h2>Past periods</h2>';
+  if(st.ps.length){h+='<div class="plist">'+st.ps.slice().reverse().slice(0,8).map(function(p,i,arr){var len=diff(p.start,p.end)+1,prev=st.ps[st.ps.length-2-i];var cyc=prev?diff(prev.start,p.start):null;return '<div class="prow"><span class="when">'+niceRange(p.start,p.end)+'</span><span class="pill">'+len+' day'+(len>1?"s":"")+'</span>'+(cyc?'<span class="pill l">'+cyc+'-day cycle</span>':'')+'</div>';}).join("")+'</div>';}
+  else h+='<p class="empty">Your periods will be listed here.</p>';
+  h+='</section></div><div class="stack"><section class="card"><h2>What I feel most</h2>';
+  var count={};Object.keys(S.logs).forEach(function(k){var l=S.logs[k];(l.sym||[]).forEach(function(s){count[s]=(count[s]||0)+1;});if(l.cramps)count["Cramps"]=(count["Cramps"]||0)+1;(l.moods||[]).forEach(function(m){var M=MOODS.filter(function(x){return x[0]===m})[0];if(M){var n=M[1]+" "+M[2];count[n]=(count[n]||0)+1;}});});
+  var top=Object.keys(count).sort(function(a,b){return count[b]-count[a];}).slice(0,7),mx=top.length?count[top[0]]:1;
+  if(top.length)h+='<div class="bars">'+top.map(function(n){return '<div class="bar"><span>'+esc(n)+'</span><span class="t"><i style="width:'+(count[n]/mx*100)+'%"></i></span><span class="n">'+count[n]+'</span></div>';}).join("")+'</div>';
+  else h+='<p class="empty">Log moods and symptoms to see them here.</p>';
+  h+='</section><section class="card tip"><h2 style="font-size:19px;margin-bottom:6px">Talk to Mom or a doctor if</h2><ul>'+
+    '<li>a period lasts more than 7 days</li><li>you need a new pad every hour or two</li><li>cramps are so strong you can\'t do your normal day</li><li>you go 3 months without a period, or periods come closer than 21 days apart</li></ul></section></div></div>';
+  $("view").innerHTML=h;
+}
+
+function viewSet(){
+  var st=stats();
+  var h='<div class="grid2"><div class="stack"><section class="card"><h2>About you</h2>'+
+    '<div class="set"><label class="label" for="nameIn">Your name</label><input class="inp" id="nameIn" maxlength="24" value="'+esc(S.name)+'" placeholder="Type your name"></div></section>'+
+    '<section class="card"><h2>Reminder</h2><div class="set"><span class="label">Remind me before my period</span><div class="chips">'+
+    [[0,"Off"],[1,"1 day"],[2,"2 days"],[3,"3 days"],[5,"5 days"]].map(function(o){return '<button class="chip" aria-pressed="'+(S.remind===o[0])+'" data-rem="'+o[0]+'">'+o[1]+'</button>';}).join("")+
+    '</div><p class="hint">You\'ll see a reminder at the top of the Today page.</p></div>'+
+    '<div class="set"><span class="label">Add to my calendar</span><p class="hint">Puts your next 3 expected periods in your iPad or computer calendar, with an alert '+(S.remind||1)+' day'+((S.remind||1)>1?"s":"")+' before at 9 am. Do this again after each period so the dates stay fresh.</p><button class="btn" id="icsBtn"'+(st.next?"":" disabled")+'>📅 Add reminders to calendar</button></div></section></div>'+
+    '<div class="stack"><section class="card"><h2>Backup</h2><div class="set"><p class="hint">Your diary is saved only on this device. Save a backup file to keep it safe, or to move it to another device.</p>'+
+    '<div class="btnrow" style="justify-content:flex-start"><button class="btn" id="expBtn">Save backup file</button><button class="btn" id="copyBtn">Copy backup text</button></div></div>'+
+    '<div class="set"><span class="label">Restore a backup</span><div class="btnrow" style="justify-content:flex-start"><label class="btn" for="impFile" style="display:inline-block">Open backup file</label><input type="file" id="impFile" accept=".json,application/json,text/plain" hidden></div>'+
+    '<textarea id="impText" placeholder="…or paste backup text here"></textarea><button class="btn" id="impBtn">Restore from text</button></div></section>'+
+    '<section class="card"><h2>Start fresh</h2><div class="set"><p class="hint">Deletes everything in this diary on this device.</p><div id="wipeBox"><button class="btn danger" id="wipeBtn">Delete my diary</button></div></div></section></div></div>';
+  $("view").innerHTML=h;
+  $("nameIn").oninput=function(){S.name=this.value.trim();save();header();};
+  document.querySelectorAll("[data-rem]").forEach(function(b){b.onclick=function(){S.remind=+b.dataset.rem;save();viewSet();};});
+  $("icsBtn").onclick=function(){download("little-moon-reminders.ics",ics(st),"text/calendar");toast("Open the file to add it to your calendar");};
+  $("expBtn").onclick=function(){download("little-moon-backup-"+today()+".json",JSON.stringify(S),"application/json");toast("Backup saved");};
+  $("copyBtn").onclick=function(){var txt=JSON.stringify(S);var ta=$("impText");try{navigator.clipboard.writeText(txt).then(function(){toast("Backup copied");},function(){ta.value=txt;ta.select();toast("Select and copy the text");});}catch(e){ta.value=txt;ta.select();toast("Select and copy the text");}};
+  $("impFile").onchange=function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){restore(r.result);};r.readAsText(f);};
+  $("impBtn").onclick=function(){restore($("impText").value);};
+  $("wipeBtn").onclick=function(){$("wipeBox").innerHTML='<p style="margin:0 0 10px;font-weight:800">Are you sure? This can\'t be undone.</p><div class="btnrow" style="justify-content:flex-start"><button class="btn danger" id="wipeYes">Yes, delete everything</button><button class="btn" id="wipeNo">Keep my diary</button></div>';
+    $("wipeYes").onclick=function(){S=blank();save();toast("Diary deleted");setTab("today");};$("wipeNo").onclick=viewSet;};
+}
+function restore(txt){
+  try{var d=JSON.parse(txt);if(!d||typeof d.logs!=="object")throw 0;S=Object.assign(blank(),d);save();toast("Diary restored 🌙");setTab("today");}
+  catch(e){toast("That doesn't look like a Little Moon backup");}
+}
+function download(name,text,type){
+  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type:type}));a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+}
+function ics(st){
+  var d=S.remind||1,lines=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Little Moon//EN","CALSCALE:GREGORIAN"];
+  var stamp=new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z";
+  for(var c=0;c<3;c++){
+    var s=add(st.next,c*st.avgC),e=add(s,1);
+    lines.push("BEGIN:VEVENT","UID:littlemoon-"+s+"@local","DTSTAMP:"+stamp,"DTSTART;VALUE=DATE:"+s.replace(/-/g,""),"DTEND;VALUE=DATE:"+e.replace(/-/g,""),
+      "SUMMARY:🌙 Period may start (Little Moon)","DESCRIPTION:Expected around this day. Keep a pad in your bag!","TRANSP:TRANSPARENT",
+      "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:Your period may start soon 🌙","TRIGGER:-PT"+(d*24-9)+"H","END:VALARM","END:VEVENT");
+  }
+  lines.push("END:VCALENDAR");return lines.join("\r\n");
+}
+
+function loadExample(){
+  var t=today(),L={},starts=[add(t,-86),add(t,-57),add(t,-27)],lens=[5,6,5];
+  var moodsets=[["sensitive"],["sleepy","grumpy"],["calm"],["happy"],["energetic","happy"]];
+  starts.forEach(function(s,i){for(var j=0;j<lens[i];j++){var k=add(s,j);L[k]={p:true,flow:j===0?"medium":j<3?"heavy":j<lens[i]-1?"medium":"light"};if(j<2){L[k].cramps=j===0?2:1;L[k].sym=j===0?["Tired","Back pain"]:["Bloating"];L[k].moods=moodsets[j];}}});
+  L[add(t,-31)]={moods:["grumpy"],sym:["Pimples","Cravings"]};L[add(t,-3)]={moods:["happy"]};L[add(t,-1)]={moods:["energetic"],note:"Fun day at school"};
+  S.logs=L;S.example=true;S.answered=starts[2];save();toast("Example days added");render();
+}
+
+function render(){header();({today:viewToday,cal:viewCal,me:viewMe,set:viewSet})[tab]();}
+setTab("today");
+// refresh when the date changes while the app stays open
+var lastDay=today();setInterval(function(){if(today()!==lastDay){lastDay=today();render();}},60000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden&&today()!==lastDay){lastDay=today();render();}});
+try{if("serviceWorker" in navigator&&location.protocol==="https:"&&!/claude/.test(location.hostname))navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}
+})();
+</script>
